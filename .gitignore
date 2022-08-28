@@ -30,7 +30,7 @@ data
 node_modules
 
 # Certs
-certs/
+#certs/
 
 # Logs
 logs/
@@ -41,3 +41,7 @@ bin
 
 # Custom
 .DS_Store
+
+#IntellijIdea
+.idea
+*.iml
