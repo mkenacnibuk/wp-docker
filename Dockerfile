@@ -1,4 +1,16 @@
-FROM urre/wordpress-nginx-docker-compose-image:1.2.1
+# toto je docker image definijuci verziu PHP a verziu wordpress-u
+# vid link:
+# https://github.com/urre/wordpress-nginx-docker-compose-image/blob/master/Dockerfile
+# https://github.com/urre/wordpress-nginx-docker-compose-image/tags
+
+# Docker version:
+# https://wordpress.org/download/releases/
+
+#FROM urre/wordpress-nginx-docker-compose-image:1.2.1
+#FROM urre/wordpress-nginx-docker-compose-image:1.2.2
+#FROM urre/wordpress-nginx-docker-compose-image:1.3.0
+# PHP 8.1-fpm, Wordpress 6.0
+FROM urre/wordpress-nginx-docker-compose-image:1.4.0
 
 # Install wp-cli
 RUN apt-get update && apt-get install -y sudo less mariadb-client
