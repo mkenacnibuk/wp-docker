@@ -195,6 +195,14 @@ docker-compose run composer create-project
 docker-compose up
 ```
 
+<details>
+ <summary>Run in detached mode</summary>
+
+```shell
+docker-compose up -d
+```
+</details>
+
 Docker Compose will now start all the services for you:
 
 ```shell
@@ -343,5 +351,129 @@ docker-compose up -d --force-recreate --build
 
 #### 2019-08-02
 - Added Linux support. Thanks to [@faysal-ishtiaq](https://github.com/faysal-ishtiaq).
+
+</details>
+
+<details>
+ <summary>Casto pouzivane prikazy</summary>
+
+##### Praca s docker-om
+```shell
+docker compose run composer update
+
+apache2-stop && docker compose up -d
+docker compose up -d
+
+docker compose ps
+docker compose ps -a
+docker compose images
+
+docker compose down
+
+docker rm -vf $(docker compose ps)
+ 
+docker compose ps -a
+docker exec -it sykogeodet-wordpress bash
+```
+
+##### Praca s git-om, prepnutie git uctu, prehlad aktivneho git user-a/uctu
+- git ma v ramci OS viacero scopes/rozsahov, v ramci kt. su definovane properties ako `user.name` alebo `user.email`. Tie urovne su 
+  - system
+  - global
+  - local
+  - worktree
+  - portable
+- vid [link#1](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Use-Git-config-list-to-inspect-gitconfig-variable-settings)
+- vid [link#2](https://www.youtube.com/watch?v=oukEr7s7d3E&t=2s) 
+```shell
+git config --list
+git config --list --show-origin
+git config --list --show-scope
+
+git config user.name
+git config user.email
+
+git config --get user.name
+git config --get user.email
+
+git config --global user.name "mkubincanek"
+git config --global user.email="mkubincanek@ohpen.com"
+
+git config --system user.name "mkubincanek"
+git config --system user.email="mkubincanek@ohpen.com"
+
+git config --local user.name "mkenacnibuk"
+git config --local user.email "martin.kubincanek@gmail.com"
+
+git config --worktree user.name "mkubincanek"
+git config --worktree user.email="mkubincanek@ohpen.com"
+
+git config --list
+
+cd ~/code/gh-personal/ & git clone git@personal:mkenacnibuk/wp-docker.git
+cat ~/code/gh-personal/wp-docker/.git/config 
+cat ~/code/gh/wp-docker/.git/config
+cat /home/mkubincanek/.gitconfig 
+```
+
+##### Elementor -> Kit Library -> system info --> 
+```shell
+Write Permissions: There are some writing permissions issues with the following directories/files:
+  - WordPress root directory
+  
+docker compose ps -a
+docker exec -it sykogeodet-wordpress bash
+
+ls -lat  /var/www/html/web/app/plugins/elementor/modules/system-info/reporters/
+cat  /var/www/html/web/app/plugins/elementor/modules/system-info/reporters/server.php
+cd  /var/www/html/web/app/plugins/elementor/modules/system-info/reporters/
+```
+
+##### Zaloha/Backup - kompletna kopia dat MySQL databazy z WordPressu
+```bash
+docker run --rm \
+  -v $(pwd)/data/db:/var/lib/mysql \
+  -v /home/mkubincanek/Documents/SYKO/docker-db-backup:/backup \
+  alpine \
+  tar -cjf /backup/my_wordpress_database_backup.tar.bz2 -C /var/lib/mysql ./
+```
+
+```bash
+docker exec 'sykogeodet-mysql' \
+  mysqldump -u root -p'password' \
+  sykogeodet > /home/mkubincanek/Documents/SYKO/docker-db-backup/my_wordpress_database_backup.sql
+```
+
+##### Obnova z Backup-u - kompletna kopia dat MySQL databazy do WordPressu
+```bash
+docker run --rm \
+  -v $(pwd)/data/db:/var/lib/mysql \
+  -v /home/mkubincanek/Documents/SYKO/docker-db-backup:/backup \
+  alpine \
+  sh -c "rm -rf /var/lib/mysql/* && tar -xjf /backup/my_wordpress_database_backup.tar.bz2 -C /var/lib/mysql"
+```
+
+```json
+"require": {
+    "php": ">=7.1",
+    "composer/installers": "^1.8",
+    "vlucas/phpdotenv": "^5.4.1",
+    "oscarotero/env": "^2.1",
+    "roots/bedrock-autoloader": "^1.0",
+    "roots/wordpress": "^6.0.0",
+    "roots/wp-config": "1.0.0",
+    "roots/wp-password-bcrypt": "1.0.0",
+    "wpackagist-theme/twentytwentyone": "^2.1",
+    "wpackagist-theme/twentynineteen": "^2.3",
+    "wpackagist-theme/twentyseventeen": "^3.0",
+    "wpackagist-theme/hello-elementor": "3.0.1",
+    "wpackagist-plugin/advanced-custom-fields": "^6.00",
+    "wpackagist-plugin/wordpress-seo": "22.3",
+    "wpackagist-plugin/wp-smushit": "3.15.5",
+    "wpackagist-plugin/stackable-ultimate-gutenberg-blocks": "3.12.11",
+    "wpackagist-plugin/wpforms-lite": "1.8.7.2",
+    "wpackagist-plugin/elementor": "3.20.3"
+  }
+```
 
 </details>
