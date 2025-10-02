@@ -127,6 +127,9 @@ if (file_exists($env_config)) {
     require_once $env_config;
 }
 
+// XXX Worpdpress mi zakazuje upload favicon.ico, alebo *.ttf suborov
+Config::define('ALLOW_UNFILTERED_UPLOADS', true);
+
 Config::apply();
 
 /**
