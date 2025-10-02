@@ -6,4 +6,6 @@
  */
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/application.php';
+/** Unable to create directory uploads/2022/09. Is its parent directory writable by the server? */
+// define( 'UPLOADS', 'app/uploads' );
 require_once ABSPATH . 'wp-settings.php';
